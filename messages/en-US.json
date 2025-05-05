@@ -1,0 +1,86 @@
+{
+  "Navbar": {
+    "movies": {
+      "title": "Movies",
+      "top250": "Top 250 Movies",
+      "popular": "Most Popular Movies",
+      "boxOffice": "Top Box Office",
+      "calendar": "Release Calendar",
+      "genres": "Browse Movies by Genre",
+      "news": "Movie News",
+      "tickets": "Showtimes and Tickets",
+      "india": "India Movie Spotlight"
+    },
+    "shows": {
+      "title": "Shows",
+      "top250": "Top 250 TV Shows",
+      "popular": "Most Popular TV Shows",
+      "streaming": "What's on TV & Streaming",
+      "genres": "Browse TV Shows by Genre",
+      "news": "TV News"
+    },
+    "celebs": {
+      "title": "Celebs",
+      "popular": "Most Popular Celebs",
+      "bornToday": "Born Today",
+      "news": "Celebrity News"
+    },
+    "watch": {
+      "title": "Watch",
+      "whatToWatch": "What to Watch",
+      "trailers": "Latest Trailers"
+    },
+    "awards": {
+      "title": "Awards",
+      "oscars": "Oscars",
+      "sxsw": "SXSW Film Festival",
+      "starmeter": "STARmeter Awards",
+      "womensHistory": "Women's History Month",
+      "allEvents": "All Events",
+      "central": "Awards Central"
+    },
+    "community": {
+      "title": "Community",
+      "help": "Help Center",
+      "contributors": "Contributor Zone",
+      "zone": "Zone"
+    },
+    "Watchlist": "Watchlist",
+    "User": "User"
+  },
+  "Home": {
+    "Hero": {
+      "CarouselSlide": {
+        "buttonText": "Посмотреть"
+      },
+      "FeaturedVideos": {
+        "heading": "Videos",
+        "trailersButton": "Browse Trailers"
+      }
+    },
+    "FeaturedVideos": {
+      "heading": "Videos",
+      "trailersButton": "Browse Trailers"
+    },
+    "TopPicks": {
+      "heading": "Top Picks",
+      "backgroundHeading": "What to Watch"
+    },
+    "NowPlaying": {
+      "heading": "Popular Today",
+      "backgroundHeading": "Streaming Now"
+    },
+    "Upcoming": {
+      "heading": "Soon in Cinemas",
+      "backgroundHeading": "What's New"
+    },
+    "UpcomingReleases": {
+      "heading": "To Be Released",
+      "backgroundHeading": "Premieres"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, ru-RU {RU} en-US {EN} other {Unknown}}"
+  }
+}

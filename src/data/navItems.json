@@ -1,0 +1,71 @@
+[
+  {
+    "_id": 1,
+    "title": "Navbar.movies.title",
+    "dropdownItems": [
+      "Navbar.movies.top250",
+      "Navbar.movies.popular",
+      "Navbar.movies.boxOffice",
+      "Navbar.movies.calendar",
+      "Navbar.movies.genres",
+      "Navbar.movies.news",
+      "Navbar.movies.tickets",
+      "Navbar.movies.india"
+    ],
+    "iconPath": "/PopcornIcon.svg"
+  },
+  {
+    "_id": 2,
+    "title": "Navbar.shows.title",
+    "dropdownItems": [
+      "Navbar.shows.top250",
+      "Navbar.shows.popular",
+      "Navbar.shows.streaming",
+      "Navbar.shows.genres",
+      "Navbar.shows.news"
+    ],
+    "iconPath": "/ShowsIcon.svg"
+  },
+  {
+    "_id": 3,
+    "title": "Navbar.celebs.title",
+    "dropdownItems": [
+      "Navbar.celebs.popular",
+      "Navbar.celebs.bornToday",
+      "Navbar.celebs.news"
+    ],
+    "iconPath": "/CelebsIcon.svg"
+  },
+  {
+    "_id": 4,
+    "title": "Navbar.watch.title",
+    "dropdownItems": [
+      "Navbar.watch.whatToWatch",
+      "Navbar.watch.trailers"
+    ],
+    "iconPath": "/WatchIcon.svg"
+  },
+  {
+    "_id": 5,
+    "title": "Navbar.awards.title",
+    "dropdownItems": [
+      "Navbar.awards.oscars",
+      "Navbar.awards.sxsw",
+      "Navbar.awards.starmeter",
+      "Navbar.awards.womensHistory",
+      "Navbar.awards.allEvents",
+      "Navbar.awards.central"
+    ],
+    "iconPath": "/AwardsIcon.svg"
+  },
+  {
+    "_id": 6,
+    "title": "Navbar.community.title",
+    "dropdownItems": [
+      "Navbar.community.help",
+      "Navbar.community.contributors",
+      "Navbar.community.zone"
+    ],
+    "iconPath": "/CommunityIcon.svg"
+  }
+]

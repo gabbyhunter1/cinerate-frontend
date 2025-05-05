@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+  --breakpoint-xs: 30.313rem;
+
+  --color-primary: #F5C518;
+  --color-secondary: #B29630;
+  --color-darkBG: #0E0E0E;
+  --color-darkBGSecondary: #1A1A1A;
+  --color-lightBGSecondary: #D7D7D7;
+  --color-navbar-bg: #080808;
+  --color-whiteText: #C3C3C3;
+  --color-whiteTextTransparent: #C3C3C310;
+  --color-secondaryText: #797979;
+  --color-lightSecondaryText: #777777;
+  --color-regular-transparent: #A3A3A360;
+  --color-light-transparent: #A3A3A315;
+  --color-extralight-transparent: #A3A3A305;
+}
+
+:root {
+  --background: #ececec;
+  --foreground: #121212;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+.max-w-8xl {
+  max-width: 90.125rem;
+}
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  gap: 1rem
+}
+
+.embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.override > div {
+  display: block !important;
+  z-index: -1;
+}
+
+.mask-bottom-fade {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+body {
+  @apply bg-[#ececec] dark:bg-[#0e0e0e] text-[#121212] dark:text-[#c3c3c3];
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}

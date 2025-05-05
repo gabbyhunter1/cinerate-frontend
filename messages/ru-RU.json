@@ -1,0 +1,82 @@
+{
+  "Navbar": {
+    "movies": {
+      "title": "Фильмы",
+      "top250": "Топ 250 фильмов",
+      "popular": "Самые популярные фильмы",
+      "boxOffice": "Топ кассовых сборов",
+      "calendar": "Календарь релизов",
+      "genres": "Фильмы по жанру",
+      "news": "Новости",
+      "tickets": "Showtimes and Tickets",
+      "india": "India Movie Spotlight"
+    },
+    "shows": {
+      "title": "Сериалы",
+      "top250": "Топ 250 сериалов",
+      "popular": "Самые популярные сериалы",
+      "streaming": "Что показывают сейчас",
+      "genres": "Сериалы по жанру",
+      "news": "Новости"
+    },
+    "celebs": {
+      "title": "Актеры",
+      "popular": "Самые популярные актеры",
+      "bornToday": "Сегодня родились",
+      "news": "Новости"
+    },
+    "watch": {
+      "title": "Смотреть",
+      "whatToWatch": "Что посмотреть",
+      "trailers": "Последние трейлеры"
+    },
+    "awards": {
+      "title": "Награды",
+      "oscars": "Оскары",
+      "sxsw": "SXSW Film Festival",
+      "starmeter": "STARmeter Awards",
+      "womensHistory": "Women's History Month",
+      "allEvents": "All Events",
+      "central": "Awards Central"
+    },
+    "community": {
+      "title": "Комьюнити",
+      "help": "Help Center",
+      "contributors": "Contributor Zone",
+      "zone": "Zone"
+    },
+    "Watchlist": "Желаемое",
+    "User": "ЛК"
+  },
+  "Home": {
+    "Hero": {
+      "CarouselSlide": {
+        "buttonText": "Посмотреть"
+      },
+      "FeaturedVideos": {
+        "heading": "Видео",
+        "trailersButton": "Трейлеры"
+      }
+    },
+    "TopPicks": {
+      "heading": "Лучшие фильмы",
+      "backgroundHeading": "Что посмотреть"
+    },
+    "NowPlaying": {
+      "heading": "Популярные фильмы",
+      "backgroundHeading": "На хайпе"
+    },
+    "Upcoming": {
+      "heading": "Скоро в кинотеатрах",
+      "backgroundHeading": "Афиша"
+    },
+    "UpcomingReleases": {
+      "heading": "Предстоящие релизы",
+      "backgroundHeading": "Премьеры"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Выберите язык",
+    "locale": "{locale, select, ru {RU} en {EN} other {Unknown}}"
+  }
+}
