@@ -8,7 +8,7 @@ export const SearchBar = () => {
           <span>All</span>
           <ChevronDownIcon />
         </div>
-        <input type="text" placeholder="Search IMDb" className="bg-transparent w-full px-3 py-2 text-sm focus:outline-none placeholder-zinc-400" />
+        {/*<input type="text" placeholder="Search IMDb" className="bg-transparent w-full px-3 py-2 text-sm focus:outline-none placeholder-zinc-400" />*/}
         <div className="px-3">
           <Search size={18} className="text-zinc-400" />
         </div>

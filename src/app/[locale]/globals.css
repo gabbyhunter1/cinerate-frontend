@@ -59,6 +59,10 @@
   -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
+div[data-ntpc] {
+  width: 100% !important;
+}
+
 body {
   @apply bg-[#ececec] dark:bg-[#0e0e0e] text-[#121212] dark:text-[#c3c3c3];
   font-family: Arial, Helvetica, sans-serif;

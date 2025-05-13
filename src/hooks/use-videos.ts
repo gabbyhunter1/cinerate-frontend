@@ -1,19 +1,32 @@
 import useSWR from 'swr';
 import { MovieVideo, MovieVideosResponse } from '@/types/tmdb-types';
 
-const fetcher = (url: string): Promise<MovieVideo> =>
-  fetch(url)
-    .then(res => res.json())
-    .then(data => data.results);
+const fetcher = (url: string): Promise<MovieVideo> => fetch(url).then(res => res.json());
 
-function useVideos(id: number, language: string) {
-  const { data, error, isLoading } = useSWR(`http://localhost:8080/api/movie/video?id=${id}&language=${language}`, fetcher);
+function useVideos(id: number, language: string, type: string, condition?: boolean) {
+  if (condition !== undefined) {
+    const { data, error, isLoading } = useSWR(
+      condition ? `http://localhost:8080/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}` : null,
+      fetcher
+    );
 
-  return {
-    trailers: data,
-    isLoading,
-    isError: error,
-  };
+    return {
+      trailers: data,
+      isLoading,
+      isError: error,
+    };
+  } else {
+    const { data, error, isLoading } = useSWR(
+      `http://localhost:8080/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}`,
+      fetcher
+    );
+    
+    return {
+      trailers: data,
+      isLoading,
+      isError: error,
+    };
+  }
 }
 
 export default useVideos;

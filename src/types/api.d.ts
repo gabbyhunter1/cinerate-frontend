@@ -147,7 +147,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get movie video */
+        /** Get movie videos filtered by type */
         get: operations["getVideo"];
         put?: never;
         post?: never;
@@ -487,11 +487,6 @@ export interface components {
             /** Format: int32 */
             vote_count?: number;
         };
-        VideoResults: {
-            /** Format: int32 */
-            id?: number;
-            results?: components["schemas"]["video"][];
-        };
         video: {
             id?: string;
             name?: string;
@@ -695,6 +690,11 @@ export interface components {
             /** Format: int32 */
             total_results?: number;
         };
+        VideoResults: {
+            /** Format: int32 */
+            id?: number;
+            results?: components["schemas"]["video"][];
+        };
         WatchProviders: {
             link?: string;
             rent?: components["schemas"]["Provider"][];
@@ -740,6 +740,8 @@ export interface operations {
                 page?: number;
                 /** @description Limit number of people to return */
                 limit?: number;
+                /** @description offset */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -849,10 +851,16 @@ export interface operations {
     getUpcomingMovies: {
         parameters: {
             query?: {
+                /** @description Language (e.g. ru-RU) */
                 language?: string;
+                /** @description Page number */
                 page?: number;
+                /** @description Region (e.g. RU) */
                 region?: string;
+                /** @description Limit (e.g. 10) */
                 limit?: number;
+                /** @description offset */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -874,10 +882,16 @@ export interface operations {
     getTopRatedMovies: {
         parameters: {
             query?: {
+                /** @description Language (e.g. ru-RU) */
                 language?: string;
+                /** @description Page number */
                 page?: number;
+                /** @description Region (e.g. RU) */
                 region?: string;
+                /** @description Limit (e.g. 10) */
                 limit?: number;
+                /** @description offset */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -907,6 +921,8 @@ export interface operations {
                 region?: string;
                 /** @description Limit (e.g. 10) */
                 limit?: number;
+                /** @description offset */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -928,10 +944,16 @@ export interface operations {
     getNowPlayingMovies: {
         parameters: {
             query?: {
+                /** @description Language (e.g. ru-RU) */
                 language?: string;
+                /** @description Page number */
                 page?: number;
+                /** @description Region (e.g. RU) */
                 region?: string;
+                /** @description Limit (e.g. 10) */
                 limit?: number;
+                /** @description offset */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -953,10 +975,12 @@ export interface operations {
     getVideo: {
         parameters: {
             query: {
-                /** @description id movie */
+                /** @description Movie ID */
                 id: number;
-                /** @description language */
+                /** @description Language (e.g. ru-RU) */
                 language?: string;
+                /** @description Video type to filter by (e.g. Trailer, Teaser) */
+                type?: string;
             };
             header?: never;
             path?: never;
@@ -970,7 +994,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["VideoResults"];
+                    "*/*": components["schemas"]["video"][];
                 };
             };
         };

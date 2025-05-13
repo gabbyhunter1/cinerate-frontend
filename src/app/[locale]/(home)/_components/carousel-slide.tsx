@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { PopularMoviesResponse } from '@/types/tmdb-types';
 import MovieCaption from '@/app/[locale]/(home)/_components/movie-caption';
@@ -11,7 +11,7 @@ type CarouselSlideProps = {
   movies: PopularMoviesResponse | undefined;
 };
 
-const CarouselSlide: React.FC<CarouselSlideProps> = ({ movies }) => {
+const CarouselSlide: FC<CarouselSlideProps> = ({ movies }) => {
   const [state, setState] = useState<{
     direction: 'left' | 'right';
     index: number;
@@ -42,15 +42,6 @@ const CarouselSlide: React.FC<CarouselSlideProps> = ({ movies }) => {
 
   return (
     <>
-      {/*Blurred background*/}
-      {/*<div*/}
-      {/*  aria-hidden="true"*/}
-      {/*  className="pointer-events-none absolute inset-0 -z-10 max-h-svh select-none bg-gradient-radial from-transparent to-background backdrop-blur-3xl">*/}
-      {/*  <img*/}
-      {/*    src={`https://image.tmdb.org/t/p/w300${movies[state.index].backdrop_path}`}*/}
-      {/*    className="pointer-events-none absolute inset-0 -z-20 h-[90svh] select-none object-cover object-bottom blur-[250px] dark:blur-[128px]"*/}
-      {/*  />*/}
-      {/*</div>*/}
       <AnimatePresence mode="wait">
         <motion.div
           className="max-w-[1041px] w-full"
@@ -68,20 +59,16 @@ const CarouselSlide: React.FC<CarouselSlideProps> = ({ movies }) => {
           transition={{ duration: 0.3, ease: 'easeInOut' }}>
           <div className="relative">
             {/*using a custom .override class because ImageGlow has a hardcoded inline style of inline-block*/}
-            <div className="override">
+            <div className="override w-full max-w-[1041px]">
               <ImageGlow radius={200} saturation={2}>
                 <img
                   src={`https://image.tmdb.org/t/p/w780${movies[state.index].backdrop_path}`}
+                  decoding={'async'}
                   className="object-cover w-full rounded-lg mask-bottom-fade"
                   alt={movies[state.index].title}
                 />
               </ImageGlow>
             </div>
-            {/*<img*/}
-            {/*  src={`https://image.tmdb.org/t/p/w780${movies[state.index].backdrop_path}`}*/}
-            {/*  className="object-cover w-full"*/}
-            {/*  alt={movies[state.index].title}*/}
-            {/*/>*/}
             <CarouselController movies={movies} prevSlide={prevSlide} nextSlide={nextSlide} currentIndex={state.index} />
           </div>
           <MovieCaption

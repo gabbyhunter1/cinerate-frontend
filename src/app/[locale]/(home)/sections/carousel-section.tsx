@@ -8,21 +8,13 @@ type CardsSectionProps = {
   backgroundHeader?: string;
   heading: string;
   marginTop?: string;
-  response: 'popular' | 'top-rated' | 'upcoming' | 'now-playing' | 'releases';
-  isReleases?: boolean;
+  response: 'popular' | 'top-rated' | 'upcoming' | 'now-playing' | 'releases' | 'premieres';
   renderCard: (movie: Movie) => React.ReactNode;
 };
 
-const CarouselSection: React.FC<CardsSectionProps> = async ({
-  backgroundHeader = '',
-  heading,
-  marginTop = 'mt-25',
-  response,
-  isReleases = false,
-  renderCard,
-}) => {
+const CarouselSection: React.FC<CardsSectionProps> = async ({ backgroundHeader = '', heading, marginTop = 'mt-25', response, renderCard }) => {
   const lang = await getLocale();
-  const data = await fetch(`http://localhost:8080/api/movieLists/${response}?language=${lang}`);
+  const data = await fetch(`http://localhost:8080/api/movieLists/${response}?language=${lang}&limit=10`);
   console.log('test', data.json);
   const movies: PopularMoviesResponse | TopRatedMoviesResponse | UpcomingMoviesResponse | NowPlayingMoviesResponse = await data.json();
 

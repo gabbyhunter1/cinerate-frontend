@@ -7,4 +7,4 @@ export type UpcomingMoviesResponse = operations['getUpcomingMovies']['responses'
 export type NowPlayingMoviesResponse = operations['getNowPlayingMovies']['responses'][200]['content']['*/*'];
 
 export type MovieVideosResponse = operations['getVideo']['responses'][200]['content']['*/*'];
-export type MovieVideo = MovieVideosResponse['results'];
+export type MovieVideo = MovieVideosResponse;

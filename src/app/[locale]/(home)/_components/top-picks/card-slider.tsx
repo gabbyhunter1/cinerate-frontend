@@ -1,17 +1,15 @@
 'use client';
 
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { EmblaCarouselType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
-import { PopularMoviesResponse } from '@/types/tmdb-types';
-import GeneralMovieCard from '@/app/[locale]/_components/ui/general-movie-card';
 
 type CardSliderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-const CardSlider: React.FC<CardSliderProps> = ({ children }) => {
+const CardSlider: FC<CardSliderProps> = ({ children }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     containScroll: 'trimSnaps',
     align: 'start',

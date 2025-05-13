@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PopularMoviesResponse } from '@/types/tmdb-types';
 
@@ -11,7 +11,7 @@ type CarouselControllerProps = {
   positionClass?: string;
 };
 
-const CarouselController: React.FC<CarouselControllerProps> = ({
+const CarouselController: FC<CarouselControllerProps> = ({
   movies,
   prevSlide,
   nextSlide,

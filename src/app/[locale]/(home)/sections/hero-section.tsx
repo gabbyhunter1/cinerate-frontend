@@ -5,7 +5,7 @@ import { getLocale } from 'next-intl/server';
 
 const HeroSection = async () => {
   const lang = await getLocale();
-  const data = await fetch(`http://localhost:8080/api/movieLists/popular?language=${lang}`);
+  const data = await fetch(`http://localhost:8080/api/movieLists/popular?language=${lang}&offset=0&limit=3`);
   const movies: PopularMoviesResponse = await data.json();
 
   return (

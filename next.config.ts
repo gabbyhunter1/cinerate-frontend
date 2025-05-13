@@ -3,6 +3,8 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  distDir: 'build',
+
   turbopack: {
     // rules: {
     //   '*.svg': {

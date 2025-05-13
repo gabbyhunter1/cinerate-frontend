@@ -5,13 +5,17 @@ import TrailerCard from '@/app/[locale]/(home)/_components/cards/trailer-card';
 import React, { Suspense } from 'react';
 import LoadingSkeleton from '@/app/[locale]/(home)/sections/loading-skeleton';
 import GeneralMovieCard from '@/app/[locale]/_components/ui/new-card';
-import { YouTubeEmbed } from '@next/third-parties/google';
+import { routing } from '@/i18n/routing';
+
+export function generateStaticParams() {
+  return routing.locales.map(locale => ({ locale }));
+}
 
 export default async function Home() {
   const t = await getTranslations('Home');
-
   return (
     <>
+      <p>Build Time: {new Date().toLocaleTimeString()}</p>
       <Suspense fallback={<LoadingSkeleton />}>
         <HeroSection />
       </Suspense>
@@ -35,15 +39,14 @@ export default async function Home() {
         heading={t('Upcoming.heading')}
         marginTop="mt-32"
         response="upcoming"
-        renderCard={movie => <TrailerCard title={movie.title} release_date={movie.release_date} backdrop_path={movie.backdrop_path} />}
+        renderCard={movie => <TrailerCard movie={movie} title={movie.title} release_date={movie.release_date} backdrop_path={movie.backdrop_path} />}
       />
       <CarouselSection
         backgroundHeader={t('UpcomingReleases.backgroundHeading')}
         heading={t('UpcomingReleases.heading')}
         marginTop="mt-32"
-        response="upcoming"
-        isReleases={true}
-        renderCard={movie => <TrailerCard title={movie.title} release_date={movie.release_date} backdrop_path={movie.backdrop_path} />}
+        response="premieres"
+        renderCard={movie => <TrailerCard movie={movie} title={movie.title} release_date={movie.release_date} backdrop_path={movie.backdrop_path} />}
       />
     </>
   );
