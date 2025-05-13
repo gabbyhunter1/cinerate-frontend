@@ -11,12 +11,23 @@ type CarouselSlideProps = {
   movies: PopularMoviesResponse | undefined;
 };
 
+const sliderVariants = {
+  incoming: (direction: -1 | 1) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  exit: (direction: -1 | 1) => ({
+    x: direction > 0 ? '-100%' : '100%',
+    opacity: 0.2,
+  }),
+};
+
 const CarouselSlide: FC<CarouselSlideProps> = ({ movies }) => {
   const [state, setState] = useState<{
-    direction: 'left' | 'right';
+    direction: -1 | 1;
     index: number;
   }>({
-    direction: 'right',
+    direction: 1,
     index: 0,
   });
 
@@ -26,44 +37,36 @@ const CarouselSlide: FC<CarouselSlideProps> = ({ movies }) => {
 
   const nextSlide = () => {
     setState(prev => ({
-      direction: 'right',
+      direction: 1,
       index: (prev.index + 1) % movies.length,
     }));
-    console.log(state.direction);
   };
 
   const prevSlide = () => {
     setState(prev => ({
-      direction: 'left',
+      direction: -1,
       index: (prev.index - 1 + movies.length) % movies.length,
     }));
-    console.log(state.direction);
   };
 
   return (
     <>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false} custom={state.direction}>
         <motion.div
           className="max-w-[1041px] w-full"
-          key={`${movies[state.index].backdrop_path}-${state.direction}`}
+          key={`${state.index}-${state.direction}`}
           custom={state.direction}
-          initial={{
-            x: state.direction === 'right' ? '100%' : '-100%',
-            opacity: 0,
-          }}
+          variants={sliderVariants}
+          initial={'incoming'}
           animate={{ x: 0, opacity: 1 }}
-          exit={{
-            x: state.direction === 'right' ? '-100%' : '100%',
-            opacity: 0,
-          }}
+          exit={'exit'}
           transition={{ duration: 0.3, ease: 'easeInOut' }}>
           <div className="relative">
-            {/*using a custom .override class because ImageGlow has a hardcoded inline style of inline-block*/}
             <div className="override w-full max-w-[1041px]">
               <ImageGlow radius={200} saturation={2}>
                 <img
                   src={`https://image.tmdb.org/t/p/w780${movies[state.index].backdrop_path}`}
-                  decoding={'async'}
+                  decoding="async"
                   className="object-cover w-full rounded-lg mask-bottom-fade"
                   alt={movies[state.index].title}
                 />

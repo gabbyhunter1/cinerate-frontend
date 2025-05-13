@@ -4,7 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 import React from 'react';
-// import Navbar from '@/app/[locale]/_components/navbar-layout/navbar';
+import Navbar from '@/app/[locale]/_components/navbar-layout/navbar';
 import { inter } from '@/components/fonts/fonts';
 import ThemeProvider from '@/providers/theme-provider';
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
       <body className={`${inter.className} antialiased transition duration-300`}>
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            {/*<Navbar />*/}
+            <Navbar />
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

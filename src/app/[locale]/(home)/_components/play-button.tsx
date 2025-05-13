@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PlayButton from '@/app/[locale]/_components/ui/play-button.svg';
-import { useMediaQuery } from 'react-responsive';
 import MainButton from '@/components/ui/main-button';
 import { ChevronRight } from 'lucide-react';
 import useWindowSize from '@/hooks/useWindowSize';
@@ -26,7 +25,7 @@ const PlayButtonComponent = () => {
       ) : (
         <button className="max-xs:order-2 group cursor-pointer">
           <PlayButton
-            className="size-[100px] md:size-auto group-hover:[&>circle]:fill-opacity-100 group-hover:[&>circle]:fill-primary"
+            className="size-[100px] md:size-[143px] group-hover:[&>circle]:fill-opacity-100 group-hover:[&>circle]:fill-primary"
             alt="Play button"
           />
         </button>

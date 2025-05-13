@@ -13,9 +13,9 @@ export function generateStaticParams() {
 
 export default async function Home() {
   const t = await getTranslations('Home');
+
   return (
     <>
-      <p>Build Time: {new Date().toLocaleTimeString()}</p>
       <Suspense fallback={<LoadingSkeleton />}>
         <HeroSection />
       </Suspense>

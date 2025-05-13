@@ -20,7 +20,7 @@ const MovieCaption: React.FC<MovieCaptionProps> = ({ title, caption, poster }) =
         />
       </picture>
       <div className="flex max-xs:flex-col flex-row items-center gap-3 xs:gap-6 pt-2">
-        <div className="max-xs:order-2">
+        <div className="max-xs:order-2 h-full [max-width:475px]:h-[143px] [min-width:475px]:h-[100px] md:h-[143px]">
           <PlayButtonComponent />
         </div>
         <div className="flex-col max-sm:text-center gap-3">

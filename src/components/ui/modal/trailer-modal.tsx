@@ -16,7 +16,6 @@ type TrailerModalProps = {
 const TrailerModal = async ({ movieID, lang, layout, title, overview, isOpen }: TrailerModalProps) => {
   const trailersData = await getVideos(movieID, lang, 'trailer');
   const fallbackTrailersData = await getVideos(movieID, 'en-US', 'trailer');
-  console.log('im called bitch!');
   // await wait(9000);
 
   const [trailers, fallbackTrailers] = await Promise.all([trailersData, fallbackTrailersData]);
