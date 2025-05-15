@@ -33,7 +33,6 @@ const NavItem: React.FC<NavItemProps> = ({ title, dropdownItems, isOpen, iconPat
         className="absolute top-full left-0 right-0 z-30 bg-black text-white flex justify-center items-center overflow-hidden"
         onMouseLeave={onMouseLeave}
         onBlur={e => {
-          // Close dropdown only if focus moves outside the dropdown
           if (!e.currentTarget.contains(e.relatedTarget)) {
             onMouseLeave();
           }
@@ -56,7 +55,7 @@ const NavItem: React.FC<NavItemProps> = ({ title, dropdownItems, isOpen, iconPat
             </div>
           </div>
           <div className="col-span-2 justify-self-end flex items-center">
-            <img src={iconPath} alt="icon" width={256} height={256} />
+            <img src={iconPath} alt="icon" loading={'lazy'} width={256} height={256} />
           </div>
         </div>
       </motion.div>

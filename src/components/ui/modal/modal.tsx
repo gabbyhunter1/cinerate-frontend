@@ -16,19 +16,7 @@ const CarouselContext = createContext<{
   currentIndex: 0,
 });
 
-const Modal = ({
-  layout,
-  movieID,
-  title,
-  trigger,
-  children,
-}: {
-  layout: boolean;
-  movieID: number;
-  title: string;
-  trigger: ReactNode;
-  children: ReactNode;
-}) => {
+const Modal = ({ layout, title, trigger, children }: { layout: boolean; title: string; trigger: ReactNode; children: ReactNode }) => {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 

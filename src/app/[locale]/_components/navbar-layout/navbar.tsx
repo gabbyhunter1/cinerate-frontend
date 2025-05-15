@@ -7,17 +7,20 @@ import LocaleSwitcher from '@/app/[locale]/_components/locale-switch/locale-swit
 import { ModeToggle } from '@/app/[locale]/_components/ui/theme-switch-button';
 import { getTranslations } from 'next-intl/server';
 import { SearchBar } from '@/app/[locale]/_components/ui/search';
+import Link from 'next/link';
 
 const Navbar = async () => {
   const t = await getTranslations('Navbar');
 
   return (
-    <nav className="bg-navbar-bg sticky top-0 left-0 w-full z-10 text-whiteText">
+    <nav className="bg-navbar-bg sticky top-0 left-0 w-full z-10 text-whiteText mb-8">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 md:gap-7 items-center h-16">
         {/* Left Section */}
         <div className="flex gap-2 items-center justify-between">
           <div className="relative w-[61px]">
-            <Image src="/logo.svg" alt="Cinerate logo" width={61} height={31} priority />
+            <Link href="/" scroll={false}>
+              <Image src="/logo.svg" alt="Cinerate logo" width={61} height={31} priority />
+            </Link>
           </div>
           <MobileMenu />
         </div>

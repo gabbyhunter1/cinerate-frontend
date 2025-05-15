@@ -9,7 +9,7 @@ const HeroSection = async () => {
   const movies: PopularMoviesResponse = await data.json();
 
   return (
-    <section className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 mt-13 flex flex-col lg:flex-row gap-9 relative">
+    <section className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-9 relative">
       <CarouselSlide movies={movies.slice(0, 3)} />
       <FeaturedVideos movies={movies.slice(0, 3)} />
     </section>

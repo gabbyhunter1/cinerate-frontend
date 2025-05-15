@@ -6,6 +6,7 @@ import { PopularMoviesResponse } from '@/types/tmdb-types';
 import MovieCaption from '@/app/[locale]/(home)/_components/movie-caption';
 import CarouselController from '@/app/[locale]/(home)/_components/carousel-controller';
 import ImageGlow from 'react-image-glow';
+import Image from 'next/image';
 
 type CarouselSlideProps = {
   movies: PopularMoviesResponse | undefined;
@@ -64,9 +65,13 @@ const CarouselSlide: FC<CarouselSlideProps> = ({ movies }) => {
           <div className="relative">
             <div className="override w-full max-w-[1041px]">
               <ImageGlow radius={200} saturation={2}>
-                <img
+                <Image
                   src={`https://image.tmdb.org/t/p/w780${movies[state.index].backdrop_path}`}
-                  decoding="async"
+                  loading={'eager'}
+                  fetchPriority={'high'}
+                  // decoding="async"
+                  width={780}
+                  height={529}
                   className="object-cover w-full rounded-lg mask-bottom-fade"
                   alt={movies[state.index].title}
                 />

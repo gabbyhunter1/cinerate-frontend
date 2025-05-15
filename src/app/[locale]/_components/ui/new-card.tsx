@@ -6,13 +6,14 @@ import { Movie } from '@/types/tmdb-types';
 import PlayIcon from '@/assets/PlayIcon.svg';
 import Modal from '@/components/ui/modal/modal';
 import TrailerModal from '@/components/ui/modal/trailer-modal';
+import Link from 'next/link';
 
 type GeneralMovieCardProps = {
   movie: Movie;
   layout?: boolean;
 };
 
-const GeneralMovieCard: React.FC<GeneralMovieCardProps> = ({ movie, layout = false }) => {
+const GeneralMovieCard: React.FC<GeneralMovieCardProps> = ({ movie }) => {
   return (
     <>
       <div className="bg-extralight-transparent rounded-lg p-3 w-[228px]">
@@ -36,8 +37,9 @@ const GeneralMovieCard: React.FC<GeneralMovieCardProps> = ({ movie, layout = fal
                 <RateIcon />
                 <span className="text-lg">Rate</span>
               </div>
-
-              <InfoIcon />
+              <Link href={`/en/movie/${movie.id}`}>
+                <InfoIcon />
+              </Link>
             </div>
 
             <Modal layout={false} movieID={movie.id} title={movie.title} trigger={<span>Watch Trailer</span>}>

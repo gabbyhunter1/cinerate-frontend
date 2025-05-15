@@ -8,3 +8,5 @@ export type NowPlayingMoviesResponse = operations['getNowPlayingMovies']['respon
 
 export type MovieVideosResponse = operations['getVideo']['responses'][200]['content']['*/*'];
 export type MovieVideo = MovieVideosResponse;
+
+export type MovieDetails = operations['getDetails_1']['responses'][200]['content']['*/*'];
