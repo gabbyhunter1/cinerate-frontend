@@ -6,7 +6,7 @@ const fetcher = (url: string): Promise<MovieVideo> => fetch(url).then(res => res
 function useVideos(id: number, language: string, type: string, condition?: boolean) {
   if (condition !== undefined) {
     const { data, error, isLoading } = useSWR(
-      condition ? `http://localhost:8080/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}` : null,
+      condition ? `${process.env.API_BASE_URL}/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}` : null,
       fetcher
     );
 
@@ -17,10 +17,10 @@ function useVideos(id: number, language: string, type: string, condition?: boole
     };
   } else {
     const { data, error, isLoading } = useSWR(
-      `http://localhost:8080/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}`,
+      `${process.env.API_BASE_URL}/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}`,
       fetcher
     );
-    
+
     return {
       trailers: data,
       isLoading,

@@ -3,9 +3,7 @@ import { motion } from 'motion/react';
 import MainButton from '@/components/ui/main-button';
 import { ChevronDown, Share } from 'lucide-react';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
-import useVideos from '@/hooks/use-videos';
 import getVideos from '@/hooks/get-videos';
-import { getLocale } from 'next-intl/server';
 
 type TrailerModalProps = {
   movieID: number;

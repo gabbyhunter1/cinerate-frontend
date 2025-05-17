@@ -34,7 +34,7 @@ const CarouselSection: React.FC<CardsSectionProps> = async ({
   //   `http://localhost:8080/api/movie${response === 'video' ? `/video` : `Lists/${response}`}${response === 'video' ? `?id=${movieId}&` : '?'}language=${lang}&limit=10`
   // );
   const data = await fetch(
-    `http://localhost:8080/api/movie${response === 'video' ? `/video` : `Lists/${response}`}${response === 'video' ? `?id=${movieId}&` : '?'}language=${lang}&limit=10`
+    `${process.env.API_BASE_URL}/api/movie${response === 'video' ? `/video` : `Lists/${response}`}${response === 'video' ? `?id=${movieId}&` : '?'}language=${lang}&limit=10`
   );
   const movies: PopularMoviesResponse | TopRatedMoviesResponse | UpcomingMoviesResponse | NowPlayingMoviesResponse | MovieVideosResponse =
     await data.json();

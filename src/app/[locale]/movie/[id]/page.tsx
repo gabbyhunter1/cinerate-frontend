@@ -149,10 +149,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
   ];
 
   const [dataRes, releaseInfoRes, backdropsRes, castRes] = await Promise.all([
-    fetch(`http://localhost:8080/api/movie/movie-details?id=${id}&language=${locale}`),
-    fetch(`http://localhost:8080/api/movie/release-dates?id=${id}`),
-    fetch(`http://localhost:8080/api/movie/images?id=${id}&language=null&type=backdrops`),
-    fetch(`http://localhost:8080/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 2)}&type=cast`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/movie-details?id=${id}&language=${locale}`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/release-dates?id=${id}`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/images?id=${id}&language=null&type=backdrops`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 2)}&type=cast`),
   ]);
   if (!dataRes.ok) {
     return notFound();
