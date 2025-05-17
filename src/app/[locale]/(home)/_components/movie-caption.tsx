@@ -24,8 +24,10 @@ const MovieCaption: React.FC<MovieCaptionProps> = ({ title, caption, poster }) =
           <PlayButtonComponent />
         </div>
         <div className="flex-col max-sm:text-center gap-3">
-          <h2 className="text-2xl md:text-4xl text-white">{title}</h2>
-          <p className="max-xs:hidden text-2xl text-regular-transparent whitespace-nowrap max-w-[420px] text-ellipsis overflow-hidden">{caption}</p>
+          <h2 className="text-2xl md:text-4xl dark:text-white">{title}</h2>
+          <p className="max-xs:hidden text-2xl dark:text-regular-transparent text-[#00000040] whitespace-nowrap max-w-[420px] text-ellipsis overflow-hidden">
+            {caption}
+          </p>
         </div>
       </div>
     </div>

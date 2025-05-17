@@ -16,7 +16,7 @@ type GeneralMovieCardProps = {
 const GeneralMovieCard: React.FC<GeneralMovieCardProps> = ({ movie }) => {
   return (
     <>
-      <div className="bg-extralight-transparent rounded-lg p-3 w-[228px]">
+      <div className="dark:bg-extralight-transparent bg-[#A3A3A320] rounded-lg p-3 w-[228px]">
         <div className="flex flex-col gap-4">
           <img
             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
@@ -37,12 +37,21 @@ const GeneralMovieCard: React.FC<GeneralMovieCardProps> = ({ movie }) => {
                 <RateIcon />
                 <span className="text-lg">Rate</span>
               </div>
-              <Link href={`/en/movie/${movie.id}`}>
-                <InfoIcon />
+              <Link href={`/en/movie/${movie.id}`} className="">
+                <InfoIcon className="text-[#797979] hover:fill-primary" />
               </Link>
             </div>
 
-            <Modal layout={false} movieID={movie.id} title={movie.title} trigger={<span>Watch Trailer</span>}>
+            <Modal
+              layout={false}
+              movieID={movie.id}
+              title={movie.title}
+              trigger={
+                <div className="flex gap-2">
+                  <PlayIcon />
+                  <p>Trailer</p>
+                </div>
+              }>
               <Suspense
                 fallback={
                   <div className="px-12 md:px-22 py-6 relative animate-pulse">

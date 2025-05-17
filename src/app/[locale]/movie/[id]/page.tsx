@@ -1,19 +1,16 @@
 import React from 'react';
-import { MovieDetails, MovieVideo, MovieVideosResponse } from '@/types/tmdb-types';
 import { getLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { formatRuntime } from '@/utils/formatRuntime';
 import MainButton from '@/components/ui/main-button';
-import { Main } from 'next/document';
 import ImageGlow from 'react-image-glow';
 import { Timeline, TimelineEntry } from '@/components/ui/timeline';
-import ImageGlow1 from '@/components/image-glow';
-import Image from 'next/image';
-import GeneralMovieCard from '@/app/[locale]/_components/ui/new-card';
 import CarouselSection from '@/app/[locale]/(home)/_sections/carousel-section';
 import getVideos from '@/hooks/get-videos';
 import MovieVideoCard from '@/app/[locale]/movie/[id]/_components/movie-video';
 import SectionHeader from '@/components/ui/section-header';
+import { MovieCast, MovieDetails, MovieImagesBackdrop, MovieImagesBackdrops, ReleaseDate } from '@/types/tmdb-types';
+import NewCarouselSection from '@/components/newCarousel';
 
 export default async function MoviePage({ params }: { params: Promise<{ id: number }> }) {
   const [locale, { id }] = await Promise.all([getLocale(), params]);
@@ -151,18 +148,30 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
     },
   ];
 
-  const data = await fetch(`http://localhost:8080/api/movie/movie-details?id=${id}&language=${locale}`);
-  console.log(`http://localhost:8080/api/movie/details?id=${id}&language=${locale}`);
-  if (!data.ok) {
+  const [dataRes, releaseInfoRes, backdropsRes, castRes] = await Promise.all([
+    fetch(`http://localhost:8080/api/movie/movie-details?id=${id}&language=${locale}`),
+    fetch(`http://localhost:8080/api/movie/release-dates?id=${id}`),
+    fetch(`http://localhost:8080/api/movie/images?id=${id}&language=null&type=backdrops`),
+    fetch(`http://localhost:8080/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 2)}&type=cast`),
+  ]);
+  if (!dataRes.ok) {
     return notFound();
   }
-  const movie: MovieDetails = await data.json();
-  const movieDuration = movie.runtime ? formatRuntime(movie.runtime) : 'No info';
-
+  const [movie, releaseInfo, backdrops, cast]: [MovieDetails, ReleaseDate, MovieImagesBackdrops, any] = await Promise.all([
+    dataRes.json(),
+    releaseInfoRes.json(),
+    backdropsRes.json(),
+    castRes.json(),
+  ]);
   const videos = await getVideos({ id: id, type: '', language: locale, limit: '10' });
 
-  const firstColumnItems = ['Genre', 'Plot', 'Director', 'Another', 'Short', 'Medium', 'Longe'];
+  const movieDuration = movie.runtime ? formatRuntime(movie.runtime) : 'No info';
+  const certification = releaseInfo[0]?.certification || 'No certification';
+  const releaseDate = movie.release_date;
+  const releaseYear = movie.release_date?.slice(0, 4) || 'No info on release date';
+  const productionCompanies = movie.production_companies?.map(company => company.name);
 
+  const firstColumnItems = ['Genre', 'Plot', 'Director', 'Another', 'Short', 'Medium', 'Longe'];
   const secondColumnItems = [
     <div className="flex flex-wrap gap-2" key="genres">
       {movie.genres?.map(genre => (
@@ -179,6 +188,31 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
     <p className="text-primary">Denis Villeneuve</p>,
   ];
 
+  const column1 = ['Release date', 'Country', 'Language', 'Original title', 'Production companies'];
+  // @ts-ignore
+  const column2 = [
+    <p className="pt-0.5">
+      {releaseDate
+        ? new Date(movie?.release_date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        : 'No info'}
+    </p>,
+    <p className="pt-0.5">{movie.origin_country[0]}</p>,
+    <p className="text-primary pt-0.5">{new Intl.DisplayNames([locale.slice(0, 2)], { type: 'language' }).of(movie.original_language)}</p>,
+    <p className="pt-0.5">{movie.original_title}</p>,
+    <p className="text-primary pt-1">
+      {productionCompanies?.map((name, index) => (
+        <span key={index}>
+          <span className="text-yellow-400">{name}</span>
+          {index < productionCompanies.length - 1 && <span className="text-secondaryText"> • </span>}
+        </span>
+      ))}
+    </p>,
+  ];
+
   const data2: TimelineEntry[] = [
     {
       title: 'Overview',
@@ -187,7 +221,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-3">
               <h1 className="text-4xl dark:text-whiteText font-bold">{movie.title}</h1>
-              <p className="text-secondaryText">{`${movie.release_date?.slice(0, 4)} · CERT · ${movieDuration}`}</p>
+              <p className="text-secondaryText">{`${releaseYear} · ${certification} · ${movieDuration}`}</p>
             </div>
             <div className="flex sm:self-end gap-3 sm:mt-0">
               <MainButton variant={'secondary'}>Rate</MainButton>
@@ -243,47 +277,94 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
       title: 'Photos',
       content: (
         <div>
-          <CarouselSection
-            backgroundHeader=""
-            marginTop="mt-0"
-            response="video"
-            movieId={movie.id}
-            // renderCard={movie => <GeneralMovieCard title={movie.title} poster={movie.poster_path} />}
-            renderCard={movie => <MovieVideoCard movieID={movie.id} title={movie.name} src={movie.key} />}>
+          <NewCarouselSection
+            carouselElements={backdrops?.map(backdrop => (
+              <img
+                key={backdrop.file_path}
+                src={`https://image.tmdb.org/t/p/w342${backdrop.file_path}`}
+                alt={`${movie.title} backdrop`}
+                width={264}
+                height={264}
+                loading="lazy"
+                className="rounded-lg h-[264px] object-cover object-center"
+              />
+            ))}>
             <SectionHeader text={'Photos'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem">
-              <MainButton variant={'themeChanging'}>See all {videos.length}</MainButton>
+              <MainButton variant={'themeChanging'}>See all {backdrops?.length}</MainButton>
             </SectionHeader>
-          </CarouselSection>
+          </NewCarouselSection>
         </div>
       ),
       overflowOnContent: 'overflow-hidden',
     },
+    {
+      title: 'Cast',
+      content: (
+        <div>
+          <NewCarouselSection
+            gap="gap-7"
+            carouselElements={cast?.map(actor =>
+              actor.profile_path ? (
+                <div key={actor.credit_id} className="flex flex-col gap-3">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                    alt={`${movie.title} backdrop`}
+                    loading="lazy"
+                    className="rounded-lg max-w-none"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <p className="dark:text-white text-black">{actor.name}</p>
+                    <p className="text-secondaryText">{actor.character}</p>
+                  </div>
+                </div>
+              ) : (
+                <img src={'https://placehold.co/185x278/white/000000?text=No Picture'} alt="No Picture" loading="lazy" />
+              )
+            )}>
+            <SectionHeader text={'Cast'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem">
+              <MainButton variant={'themeChanging'}>See all {backdrops?.length}</MainButton>
+            </SectionHeader>
+          </NewCarouselSection>
+        </div>
+      ),
+      overflowOnContent: 'overflow-hidden',
+    },
+    {
+      title: 'User Reviews',
+      content: (
+        <div>
+          <NewCarouselSection>
+            <SectionHeader text={'User Reviews'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem">
+              <MainButton variant={'themeChanging'}>See all {backdrops?.length}</MainButton>
+            </SectionHeader>
+          </NewCarouselSection>
+        </div>
+      ),
+      overflowOnContent: 'overflow-hidden',
+    },
+    {
+      title: 'Details',
+      content: (
+        <>
+          <SectionHeader text={'Details'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem" />
+          <div className="pl-2 mt-7">
+            <div className="grid gap-x-10 gap-y-10" style={{ gridTemplateColumns: 'auto 1fr' }}>
+              {column1.map((item, i) => (
+                <React.Fragment key={i}>
+                  <p className="font-bold text-lg max-w-30">{item}</p>
+                  {column2[i]}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </>
+      ),
+      overflowOnContent: 'overflow-hidden',
+    },
   ];
-  console.log(videos);
 
   return (
     <>
-      {/*<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 md:px-10">*/}
-      {/*  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">*/}
-      {/*    <div className="flex flex-col gap-3">*/}
-      {/*      <h1 className="text-4xl dark:text-whiteText font-bold">{movie.title}</h1>*/}
-      {/*      <p className="text-secondaryText">{`${movie.release_date?.slice(0, 4)} · CERT · ${movieDuration}`}</p>*/}
-      {/*    </div>*/}
-      {/*    <div className="flex sm:self-end gap-3 sm:mt-0">*/}
-      {/*      <MainButton variant={'secondary'}>Rate</MainButton>*/}
-      {/*      <MainButton variant={'secondary'}>8.9/10</MainButton>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-
-      {/*  <div className="mt-5 grid gap-4 md:grid-cols-[295px_1fr] md:gap-7 lg:gap-10 pb-7">*/}
-      {/*    <ImageGlow>*/}
-      {/*      <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt="Poster" className="h-full" />*/}
-      {/*    </ImageGlow>*/}
-      {/*    <ImageGlow>*/}
-      {/*      <img src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path}`} alt="Backdrop" className="" />*/}
-      {/*    </ImageGlow>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
       <div className="relative">
         <Timeline data={data2} />
       </div>

@@ -25,7 +25,7 @@ const PlayButtonComponent = () => {
       ) : (
         <button className="max-xs:order-2 group cursor-pointer">
           <PlayButton
-            className="size-[100px] md:size-[143px] group-hover:[&>circle]:fill-opacity-100 group-hover:[&>circle]:fill-primary"
+            className="size-[100px] md:size-[143px] [&>g>path]:fill-black dark:[&>g>path]:fill-white group-hover:[&>circle]:fill-opacity-100 group-hover:[&>circle]:fill-primary"
             alt="Play button"
           />
         </button>

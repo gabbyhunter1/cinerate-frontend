@@ -40,7 +40,7 @@ export const Timeline = ({ data, overflowOnContent }: { data: TimelineEntry[]; o
       <div ref={ref} className="relative max-w-8xl mx-auto">
         {data.map((item, index) => (
           <div key={index} className="flex justify-start pb-20 md:gap-10">
-            <div className={`relative pl-4 w-full ${item.overflowOnContent}`}>{item.content} </div>
+            <div className={`relative w-full ${item.overflowOnContent}`}>{item.content} </div>
 
             <div className="max-sm:hidden sticky flex flex-col md:flex-row z-40 items-center top-40 self-start w-[250px]">
               <h3 className="hidden md:block text-xl font-bold text-neutral-500 dark:text-neutral-500 ">{item.title}</h3>

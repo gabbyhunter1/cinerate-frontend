@@ -21,6 +21,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/people/people-details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get person details by ID */
+        get: operations["getDetails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/people/movie-credits": {
         parameters: {
             query?: never;
@@ -55,23 +72,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/people/details": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get person details by ID */
-        get: operations["getDetails"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/movieLists/upcoming": {
         parameters: {
             query?: never;
@@ -98,6 +98,23 @@ export interface paths {
         };
         /** Get top-rated movies */
         get: operations["getTopRatedMovies"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/movieLists/premieres": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get movies released after today */
+        get: operations["getMoviesReleasedAfterToday"];
         put?: never;
         post?: never;
         delete?: never;
@@ -157,6 +174,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/movie/release-dates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get release dates */
+        get: operations["getReleaseDates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/movie/movie-details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get movie details by ID */
+        get: operations["getDetails_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/movie/movie-credits": {
         parameters: {
             query?: never;
@@ -164,8 +215,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get movie credits of the person by ID */
-        get: operations["getMovieCredits_1"];
+        /**
+         * Get filtered cast or crew for a movie
+         * @description Returns a list of cast or crew members for a specific movie, optionally filtered by job and department. Specify 'type' as 'cast' or 'crew'.
+         */
+        get: operations["getFilteredCredits"];
         put?: never;
         post?: never;
         delete?: never;
@@ -181,25 +235,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get person images by ID */
+        /** Get movie images by ID */
         get: operations["getImages_1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/movie/details": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get person details by ID */
-        get: operations["getDetails_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -246,6 +283,67 @@ export interface components {
             /** Format: double */
             popularity?: number;
             profile_path?: string;
+        };
+        Artwork: {
+            iso_639_1?: string;
+            file_path?: string;
+            /** Format: double */
+            aspect_ratio?: number;
+            /** Format: int32 */
+            height?: number;
+            /** Format: int32 */
+            width?: number;
+            /** Format: double */
+            vote_average?: number;
+            /** Format: int32 */
+            vote_count?: number;
+        };
+        Cast: {
+            /** @enum {string} */
+            mediaType?: "movie" | "tv";
+        };
+        Change: {
+            key?: string;
+            items?: components["schemas"]["ChangeItem"][];
+        };
+        ChangeItem: {
+            id?: string;
+            action?: string;
+            time?: string;
+            iso_639_1?: string;
+            iso_3166_1?: string;
+            value?: Record<string, never>;
+        };
+        ChangeResults: {
+            changes?: components["schemas"]["Change"][];
+        };
+        CombinedPersonCredits: {
+            /** Format: int32 */
+            id?: number;
+            cast?: (components["schemas"]["MovieCast"] | components["schemas"]["TvCast"])[];
+            crew?: (components["schemas"]["MovieCrew"] | components["schemas"]["TvCrew"])[];
+        };
+        Crew: {
+            /** @enum {string} */
+            mediaType?: "movie" | "tv";
+        };
+        Data: {
+            biography?: string;
+        };
+        ExternalIds: {
+            /** Format: int32 */
+            id?: number;
+            freebase_mid?: string;
+            freebase_id?: string;
+            imdb_id?: string;
+            /** Format: int32 */
+            tvrage_id?: number;
+            wikidata_id?: string;
+            facebook_id?: string;
+            instagram_id?: string;
+            tiktok_id?: string;
+            twitter_id?: string;
+            youtube_id?: string;
         };
         MovieCast: {
             /** @enum {string} */
@@ -304,72 +402,6 @@ export interface components {
             vote_count?: number;
             credit_id?: string;
         };
-        Artwork: {
-            iso_639_1?: string;
-            file_path?: string;
-            /** Format: double */
-            aspect_ratio?: number;
-            /** Format: int32 */
-            height?: number;
-            /** Format: int32 */
-            width?: number;
-            /** Format: double */
-            vote_average?: number;
-            /** Format: int32 */
-            vote_count?: number;
-        };
-        PersonImages: {
-            /** Format: int32 */
-            id?: number;
-            profiles?: components["schemas"]["Artwork"][];
-        };
-        Cast: {
-            /** @enum {string} */
-            mediaType?: "movie" | "tv";
-        };
-        Change: {
-            key?: string;
-            items?: components["schemas"]["ChangeItem"][];
-        };
-        ChangeItem: {
-            id?: string;
-            action?: string;
-            time?: string;
-            iso_639_1?: string;
-            iso_3166_1?: string;
-            value?: Record<string, never>;
-        };
-        ChangeResults: {
-            changes?: components["schemas"]["Change"][];
-        };
-        CombinedPersonCredits: {
-            /** Format: int32 */
-            id?: number;
-            cast?: (components["schemas"]["MovieCast"] | components["schemas"]["TvCast"])[];
-            crew?: (components["schemas"]["MovieCrew"] | components["schemas"]["TvCrew"])[];
-        };
-        Crew: {
-            /** @enum {string} */
-            mediaType?: "movie" | "tv";
-        };
-        Data: {
-            biography?: string;
-        };
-        ExternalIds: {
-            /** Format: int32 */
-            id?: number;
-            freebase_mid?: string;
-            freebase_id?: string;
-            imdb_id?: string;
-            /** Format: int32 */
-            tvrage_id?: number;
-            wikidata_id?: string;
-            facebook_id?: string;
-            instagram_id?: string;
-            tiktok_id?: string;
-            twitter_id?: string;
-            youtube_id?: string;
-        };
         PersonDb: {
             /** Format: int32 */
             id?: number;
@@ -395,6 +427,11 @@ export interface components {
             movie_credits?: components["schemas"]["MovieCredits"];
             tv_credits?: components["schemas"]["TvCredits"];
             translations?: components["schemas"]["Translations"];
+        };
+        PersonImages: {
+            /** Format: int32 */
+            id?: number;
+            profiles?: components["schemas"]["Artwork"][];
         };
         Translation: {
             iso_3166_1?: string;
@@ -500,18 +537,11 @@ export interface components {
             official?: boolean;
             published_at?: string;
         };
-        Credits: {
+        FilteredReleaseDate: {
+            certification?: string;
+            releaseDate?: string;
             /** Format: int32 */
-            id?: number;
-            cast?: components["schemas"]["Cast"][];
-            crew?: components["schemas"]["Crew"][];
-        };
-        Images: {
-            /** Format: int32 */
-            id?: number;
-            backdrops?: components["schemas"]["Artwork"][];
-            logos?: components["schemas"]["Artwork"][];
-            posters?: components["schemas"]["Artwork"][];
+            type?: number;
         };
         AccountStates: {
             /** Format: int32 */
@@ -542,6 +572,19 @@ export interface components {
             name?: string;
             poster_path?: string;
             backdrop_path?: string;
+        };
+        Credits: {
+            /** Format: int32 */
+            id?: number;
+            cast?: components["schemas"]["Cast"][];
+            crew?: components["schemas"]["Crew"][];
+        };
+        Images: {
+            /** Format: int32 */
+            id?: number;
+            backdrops?: components["schemas"]["Artwork"][];
+            logos?: components["schemas"]["Artwork"][];
+            posters?: components["schemas"]["Artwork"][];
         };
         KeywordResults: {
             /** Format: int32 */
@@ -760,6 +803,37 @@ export interface operations {
             };
         };
     };
+    getDetails: {
+        parameters: {
+            query?: {
+                /**
+                 * @description ID of the person
+                 * @example 976
+                 */
+                id?: number;
+                /**
+                 * @description Language code (ISO 639-1)
+                 * @example ru
+                 */
+                language?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PersonDb"];
+                };
+            };
+        };
+    };
     getMovieCredits: {
         parameters: {
             query: {
@@ -817,37 +891,6 @@ export interface operations {
             };
         };
     };
-    getDetails: {
-        parameters: {
-            query?: {
-                /**
-                 * @description ID of the person
-                 * @example 976
-                 */
-                id?: number;
-                /**
-                 * @description Language code (ISO 639-1)
-                 * @example ru
-                 */
-                language?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["PersonDb"];
-                };
-            };
-        };
-    };
     getUpcomingMovies: {
         parameters: {
             query?: {
@@ -880,6 +923,37 @@ export interface operations {
         };
     };
     getTopRatedMovies: {
+        parameters: {
+            query?: {
+                /** @description Language (e.g. ru-RU) */
+                language?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Region (e.g. RU) */
+                region?: string;
+                /** @description Limit (e.g. 10) */
+                limit?: number;
+                /** @description offset */
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Movie"][];
+                };
+            };
+        };
+    };
+    getMoviesReleasedAfterToday: {
         parameters: {
             query?: {
                 /** @description Language (e.g. ru-RU) */
@@ -979,6 +1053,8 @@ export interface operations {
                 id: number;
                 /** @description Language (e.g. ru-RU) */
                 language?: string;
+                /** @description limit */
+                limit?: number;
                 /** @description Video type to filter by (e.g. Trailer, Teaser) */
                 type?: string;
             };
@@ -999,19 +1075,13 @@ export interface operations {
             };
         };
     };
-    getMovieCredits_1: {
+    getReleaseDates: {
         parameters: {
             query: {
-                /**
-                 * @description ID of the movie
-                 * @example 976
-                 */
+                /** @description id movie */
                 id: number;
-                /**
-                 * @description Language code (ISO 639-1)
-                 * @example ru
-                 */
-                language?: string;
+                /** @description iso */
+                iso?: string;
             };
             header?: never;
             path?: never;
@@ -1025,35 +1095,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["Credits"];
-                };
-            };
-        };
-    };
-    getImages_1: {
-        parameters: {
-            query: {
-                /**
-                 * @description ID of the movie
-                 * @example 976
-                 */
-                id: number;
-                /** @description language */
-                language?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["Images"];
+                    "*/*": components["schemas"]["FilteredReleaseDate"][];
                 };
             };
         };
@@ -1085,6 +1127,89 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["MovieDb"];
+                };
+            };
+        };
+    };
+    getFilteredCredits: {
+        parameters: {
+            query: {
+                /**
+                 * @description ID of the movie
+                 * @example 976
+                 */
+                id: number;
+                /**
+                 * @description Language code in ISO 639-1 format
+                 * @example ru
+                 */
+                language?: string;
+                /**
+                 * @description Type of credit data to retrieve: 'cast' or 'crew'
+                 * @example crew
+                 */
+                type: string;
+                /**
+                 * @description Filter by job title (only applies to crew)
+                 * @example Producer
+                 */
+                job?: string;
+                /**
+                 * @description Filter by department (only applies to crew)
+                 * @example Production
+                 */
+                department?: string;
+                /**
+                 * @description Maximum number of results to return
+                 * @example 10
+                 */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": Record<string, never>[];
+                };
+            };
+        };
+    };
+    getImages_1: {
+        parameters: {
+            query: {
+                /**
+                 * @description ID of the movie
+                 * @example 976
+                 */
+                id: number;
+                /** @description language */
+                language?: string;
+                /** @description Image type: posters, backdrops, logos */
+                type: string;
+                /** @description Limit the number of images returned */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Artwork"][];
                 };
             };
         };

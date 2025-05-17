@@ -7,9 +7,10 @@ import useEmblaCarousel from 'embla-carousel-react';
 
 type CardSliderProps = {
   children: ReactNode;
+  gap?: string; // tailwind string
 };
 
-const CardSlider: FC<CardSliderProps> = ({ children }) => {
+const CardSlider: FC<CardSliderProps> = ({ children, gap = 'gap-3' }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     containScroll: 'trimSnaps',
     align: 'start',
@@ -49,20 +50,20 @@ const CardSlider: FC<CardSliderProps> = ({ children }) => {
   return (
     <div className="embla">
       <div className="relative embla__viewport" ref={emblaRef}>
-        <div className="embla__container">{children}</div>
+        <div className={`embla__container ${gap}`}>{children}</div>
       </div>
-      <div className="absolute -top-2 right-4 flex items-center gap-2">
+      <div className="absolute -top-0 right-4 flex items-center gap-2">
         <button
           className={`p-2 bg-light-transparent ${!canScrollPrevState ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}  hover:bg-secondary rounded-full`}
           onClick={scrollPrev}
           disabled={!canScrollPrevState}>
-          <ChevronLeft className="text-white w-8 h-8 max-md:size-[25px]" />
+          <ChevronLeft className="text-white w-8 h-8 max-md:size-[20px]" />
         </button>
         <button
           className={`embla__next p-2 bg-light-transparent ${!canScrollNextState ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}  hover:bg-secondary rounded-full`}
           onClick={scrollNext}
           disabled={!canScrollNextState}>
-          <ChevronRight className="text-white w-8 h-8 max-md:size-[25px]" />
+          <ChevronRight className="text-white w-8 h-8 max-md:size-[20]px]" />
         </button>
       </div>
     </div>
