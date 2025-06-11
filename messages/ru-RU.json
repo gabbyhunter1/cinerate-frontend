@@ -75,6 +75,13 @@
       "backgroundHeading": "Премьеры"
     }
   },
+  "MovieDetails": {
+    "genre": "Жанр",
+    "plot": "Описание",
+    "director": "Режиссер",
+    "writing": "Сценаристы",
+    "stars": "Звезды"
+  },
   "LocaleSwitcher": {
     "label": "Выберите язык",
     "locale": "{locale, select, ru {RU} en {EN} other {Unknown}}"

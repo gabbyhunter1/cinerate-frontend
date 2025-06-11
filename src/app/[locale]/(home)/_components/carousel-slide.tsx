@@ -68,6 +68,7 @@ const CarouselSlide: FC<CarouselSlideProps> = ({ movies }) => {
                 <Image
                   src={`https://image.tmdb.org/t/p/w780${movies[state.index].backdrop_path}`}
                   loading={'eager'}
+                  priority={true}
                   fetchPriority={'high'}
                   // decoding="async"
                   width={780}

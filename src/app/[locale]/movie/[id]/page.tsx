@@ -9,7 +9,7 @@ import CarouselSection from '@/app/[locale]/(home)/_sections/carousel-section';
 import getVideos from '@/hooks/get-videos';
 import MovieVideoCard from '@/app/[locale]/movie/[id]/_components/movie-video';
 import SectionHeader from '@/components/ui/section-header';
-import { MovieCast, MovieDetails, MovieImagesBackdrop, MovieImagesBackdrops, ReleaseDate } from '@/types/tmdb-types';
+import { MovieDetails, MovieImagesBackdrops, ReleaseDate } from '@/types/tmdb-types';
 import NewCarouselSection from '@/components/newCarousel';
 
 export default async function MoviePage({ params }: { params: Promise<{ id: number }> }) {
@@ -148,22 +148,21 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
     },
   ];
 
-  const [dataRes, releaseInfoRes, backdropsRes, castRes] = await Promise.all([
+  const [dataRes, releaseInfoRes, backdropsRes, castRes, directorRes, writersRes] = await Promise.all([
     fetch(`${process.env.API_BASE_URL}/api/movie/movie-details?id=${id}&language=${locale}`),
     fetch(`${process.env.API_BASE_URL}/api/movie/release-dates?id=${id}`),
-    fetch(`${process.env.API_BASE_URL}/api/movie/images?id=${id}&language=null&type=backdrops`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/images?id=${id}&language=null&type=backdrops&`),
     fetch(`${process.env.API_BASE_URL}/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 2)}&type=cast`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 2)}&type=crew&job=director`),
+    fetch(`${process.env.API_BASE_URL}/api/movie/movie-credits?id=${id}&language=${locale.slice(0, 4)}&type=crew&department=writing`),
   ]);
   if (!dataRes.ok) {
     return notFound();
   }
-  const [movie, releaseInfo, backdrops, cast]: [MovieDetails, ReleaseDate, MovieImagesBackdrops, any] = await Promise.all([
-    dataRes.json(),
-    releaseInfoRes.json(),
-    backdropsRes.json(),
-    castRes.json(),
-  ]);
+  const [movie, releaseInfo, backdrops, cast, director, writers]: [MovieDetails, ReleaseDate, MovieImagesBackdrops, any, any, any] =
+    await Promise.all([dataRes.json(), releaseInfoRes.json(), backdropsRes.json(), castRes.json(), directorRes.json(), writersRes.json()]);
   const videos = await getVideos({ id: id, type: '', language: locale, limit: '10' });
+  const writersUnique: any = Array.from(new Map(writers.map((writer: any) => [writer.name, writer])).values());
 
   const movieDuration = movie.runtime ? formatRuntime(movie.runtime) : 'No info';
   const certification = releaseInfo[0]?.certification || 'No certification';
@@ -171,7 +170,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
   const releaseYear = movie.release_date?.slice(0, 4) || 'No info on release date';
   const productionCompanies = movie.production_companies?.map(company => company.name);
 
-  const firstColumnItems = ['Genre', 'Plot', 'Director', 'Another', 'Short', 'Medium', 'Longe'];
+  const firstColumnItems = ['Genre', 'Plot', 'Director', 'Writing', 'Stars'];
   const secondColumnItems = [
     <div className="flex flex-wrap gap-2" key="genres">
       {movie.genres?.map(genre => (
@@ -181,35 +180,58 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
       ))}
     </div>,
     <p className="max-w-2xl">{movie.overview}</p>,
-    <p className="text-primary">Denis Villeneuve · Jon Spaihts</p>,
-    <p className="text-primary">Timothée Chalamet </p>,
-    <p className="text-primary">Denis Villeneuve</p>,
-    <p className="text-primary">Denis Villeneuve</p>,
-    <p className="text-primary">Denis Villeneuve</p>,
+    <p className="text-primary">{director[0]?.name}</p>,
+    <p className="text-primary">{writersUnique.map(writer => `${writer.name}`).join(' · ')}</p>,
+    <p className="text-primary">
+      {cast
+        .slice(0, 3)
+        .map(actor => `${actor.name}`)
+        .join(' · ')}
+    </p>,
+    // <p className="text-primary">Denis Villeneuve</p>,
+    // <p className="text-primary">Denis Villeneuve</p>,
   ];
 
-  const column1 = ['Release date', 'Country', 'Language', 'Original title', 'Production companies'];
+  const column1 = ['Release date', 'Country', 'Language', 'Original title', 'Production companies', 'Budget', 'Worldwide Box Office'];
   // @ts-ignore
   const column2 = [
-    <p className="pt-0.5">
+    <p className="details-box relative pt-0.5">
       {releaseDate
-        ? new Date(movie?.release_date).toLocaleDateString('en-US', {
+        ? new Date(movie?.release_date).toLocaleDateString(`${locale}`, {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })
         : 'No info'}
     </p>,
-    <p className="pt-0.5">{movie.origin_country[0]}</p>,
-    <p className="text-primary pt-0.5">{new Intl.DisplayNames([locale.slice(0, 2)], { type: 'language' }).of(movie.original_language)}</p>,
-    <p className="pt-0.5">{movie.original_title}</p>,
-    <p className="text-primary pt-1">
+    <p className="details-box relative pt-0.5 ">{movie.origin_country[0]}</p>,
+    <p className="details-box relative text-primary pt-0.5">
+      {new Intl.DisplayNames([locale.slice(0, 2)], { type: 'language' }).of(movie.original_language)}
+    </p>,
+    <p className="details-box relative pt-0.5">{movie.original_title}</p>,
+    <p className="details-box relative text-primary pt-1">
       {productionCompanies?.map((name, index) => (
         <span key={index}>
           <span className="text-yellow-400">{name}</span>
           {index < productionCompanies.length - 1 && <span className="text-secondaryText"> • </span>}
         </span>
       ))}
+    </p>,
+    <p className="details-box relative pt-0.5">
+      {new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(movie.budget)}
+    </p>,
+    <p className="details-box relative pt-0.5">
+      {new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(movie.revenue)}
     </p>,
   ];
 
@@ -250,6 +272,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
               </React.Fragment>
             ))}
           </div>
+          <hr className="mt-[60px] h-1 text-[#a3a3a315]" />
         </section>
       ),
       overflowOnContent: '',
@@ -278,17 +301,19 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
       content: (
         <div>
           <NewCarouselSection
-            carouselElements={backdrops?.map(backdrop => (
-              <img
-                key={backdrop.file_path}
-                src={`https://image.tmdb.org/t/p/w342${backdrop.file_path}`}
-                alt={`${movie.title} backdrop`}
-                width={264}
-                height={264}
-                loading="lazy"
-                className="rounded-lg h-[264px] object-cover object-center"
-              />
-            ))}>
+            carouselElements={backdrops
+              ?.slice(0, 13)
+              .map(backdrop => (
+                <img
+                  key={backdrop.file_path}
+                  src={`https://image.tmdb.org/t/p/w342${backdrop.file_path}`}
+                  alt={`${movie.title} backdrop`}
+                  width={264}
+                  height={264}
+                  loading="lazy"
+                  className="rounded-lg h-[264px] object-cover object-center"
+                />
+              ))}>
             <SectionHeader text={'Photos'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem">
               <MainButton variant={'themeChanging'}>See all {backdrops?.length}</MainButton>
             </SectionHeader>
@@ -318,7 +343,18 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
                   </div>
                 </div>
               ) : (
-                <img src={'https://placehold.co/185x278/white/000000?text=No Picture'} alt="No Picture" loading="lazy" />
+                <div key={actor.credit_id} className="flex flex-col gap-3">
+                  <img
+                    src={'https://placehold.co/185x278/white/000000?text=No Picture'}
+                    alt="No Picture"
+                    loading="lazy"
+                    className="rounded-lg max-w-none"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <p className="dark:text-white text-black">{actor.name}</p>
+                    <p className="text-secondaryText">{actor.character}</p>
+                  </div>
+                </div>
               )
             )}>
             <SectionHeader text={'Cast'} className="text-xl sm:text-2xl md:text-2xl lg:text-3xl" size="1.125rem">
@@ -351,7 +387,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: numb
             <div className="grid gap-x-10 gap-y-10" style={{ gridTemplateColumns: 'auto 1fr' }}>
               {column1.map((item, i) => (
                 <React.Fragment key={i}>
-                  <p className="font-bold text-lg max-w-30">{item}</p>
+                  <p className="details-box relative font-bold text-lg max-w-30">{item}</p>
                   {column2[i]}
                 </React.Fragment>
               ))}

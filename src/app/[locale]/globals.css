@@ -53,6 +53,16 @@
   z-index: -1;
 }
 
+.details-box:nth-child(odd)::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  background: #a3a3a310;
+}
+
 .mask-bottom-fade {
   mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);

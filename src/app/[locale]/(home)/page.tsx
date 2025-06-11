@@ -7,7 +7,6 @@ import LoadingSkeleton from '@/app/[locale]/(home)/_sections/loading-skeleton';
 import GeneralMovieCard from '@/app/[locale]/_components/ui/new-card';
 import { routing } from '@/i18n/routing';
 import SectionHeader from '@/components/ui/section-header';
-import MainButton from '@/components/ui/main-button';
 
 export function generateStaticParams() {
   return routing.locales.map(locale => ({ locale }));
@@ -15,7 +14,6 @@ export function generateStaticParams() {
 
 export default async function Home() {
   const t = await getTranslations('Home');
-
   return (
     <>
       <Suspense fallback={<LoadingSkeleton />}>

@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   distDir: 'build',
 
+  experimental: {
+    authInterrupts: true,
+  },
+
   turbopack: {
     // rules: {
     //   '*.svg': {

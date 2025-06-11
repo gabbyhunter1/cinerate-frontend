@@ -1,6 +1,6 @@
 import { MovieVideosResponse } from '@/types/tmdb-types';
 
-export default async function getVideos({ id, language, type, limit }: { id: number; language: string; type: string; limit?: string }) {
+export default async function getVideos({ id, language, type, limit = '10' }: { id: number; language: string; type: string; limit?: string }) {
   const data = await fetch(
     `${process.env.API_BASE_URL}/api/movie/video?id=${id}&language=${language}${type === '' ? '' : `&type=${type}`}&limit=${limit}`
   );

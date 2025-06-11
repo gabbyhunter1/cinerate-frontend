@@ -1,0 +1,9 @@
+.details-box:nth-child(3n + 1)::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  background: #ffa94d;
+}

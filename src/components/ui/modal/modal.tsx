@@ -53,7 +53,7 @@ const Modal = ({ layout, title, trigger, children }: { layout: boolean; title: s
       {mounted && open
         ? createPortal(
             <AnimatePresence>
-              <div className="fixed inset-0 z-50 h-dvh overflow-auto">
+              <div className="fixed inset-0 z-100 h-dvh overflow-auto">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
